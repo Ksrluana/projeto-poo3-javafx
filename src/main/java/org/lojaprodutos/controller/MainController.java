@@ -37,7 +37,7 @@ public class MainController {
     @FXML private TableColumn<Produto, Integer> colQtd;
     @FXML private TableColumn<Produto, LocalDate> colValidade;
 
-    private ProdutoDAO dao; // inicializa no initialize()
+    private ProdutoDAO dao;
     private ObservableList<Produto> listaProdutos;
 
     @FXML
@@ -52,18 +52,12 @@ public class MainController {
                 "Alimentos", "Limpeza", "Higiene", "Bebidas"
         ));
 
-        colCodigo.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getCodigo()));
-        colNome.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getNome()));
-        colCategoria.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getCategoria().getNome()));
-        colPrecoVenda.setCellValueFactory(cell ->
-                new SimpleObjectProperty<>(cell.getValue().getPrecoVenda()));
-        colQtd.setCellValueFactory(cell ->
-                new SimpleObjectProperty<>(cell.getValue().getQuantidadeEstoque()));
-        colValidade.setCellValueFactory(cell ->
-                new SimpleObjectProperty<>(cell.getValue().getDataValidade()));
+        colCodigo.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCodigo()));
+        colNome.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNome()));
+        colCategoria.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCategoria().getNome()));
+        colPrecoVenda.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getPrecoVenda()));
+        colQtd.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getQuantidadeEstoque()));
+        colValidade.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getDataValidade()));
 
         spinnerQtd.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100000, 1));
 
@@ -148,7 +142,7 @@ public class MainController {
 
     @FXML
     private void onListar() {
-        atualizarTabela();  // Atualiza a tabela com todos os produtos
+        atualizarTabela();
         alertInfo("Listagem", "Lista atualizada.");
     }
 
@@ -164,7 +158,6 @@ public class MainController {
         }
     }
 
-    // Método de alerta para exibir informações ao usuário
     private void alertInfo(String titulo, String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -173,18 +166,10 @@ public class MainController {
         alert.showAndWait();
     }
 
-    // Método para atualizar a tabela com os dados mais recentes
     private void atualizarTabela() {
-        listaProdutos = FXCollections.observableArrayList(dao.listar()); // Pega a lista atualizada do DAO
-        tabelaProdutos.setItems(listaProdutos); // Atualiza os itens da tabela
+        listaProdutos = FXCollections.observableArrayList(dao.listar());
+        tabelaProdutos.setItems(listaProdutos);
     }
-
-    @FXML
-    private void exportarCSV() {
-        dao.exportarCSV();  // Chama o método para exportar os produtos para o CSV
-        alertInfo("Exportação", "Produtos exportados para CSV com sucesso.");
-    }
-
 
     @FXML
     public void limparFormulario() {
@@ -199,10 +184,6 @@ public class MainController {
         comboCategoria.getSelectionModel().clearSelection();
         tabelaProdutos.getSelectionModel().clearSelection();
     }
-
-    /* ===================== RELATÓRIOS ===================== */
-
-
 
     @FXML
     public void abrirRelatorios() {
@@ -230,7 +211,6 @@ public class MainController {
         mostrarAlerta("Relatórios", sb.toString());
     }
 
-    /* ===================== Helpers ===================== */
 
     private Produto criarProdutoDosCampos() {
         String codigo = inputCodigo.getText();
@@ -239,7 +219,6 @@ public class MainController {
         LocalDate fabricacao = inputDataFab.getValue();
         LocalDate validade = inputDataVal.getValue();
 
-        // Validações
         if (codigo == null || !codigo.matches("[A-Za-z0-9]{8}")) {
             mostrarAlerta("Erro", "O código deve ter exatamente 8 caracteres alfanuméricos.");
             return null;
