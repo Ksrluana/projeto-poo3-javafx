@@ -23,8 +23,9 @@ public class ProdutoDAO {
     }
 
     public List<Produto> listar() {
-        return new ArrayList<>(produtos);
+        return new ArrayList<>(produtos); // Retorna todos os produtos cadastrados
     }
+
 
     public Produto buscarPorCodigo(String codigo) {
         return produtos.stream()
